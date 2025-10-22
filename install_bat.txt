@@ -1,0 +1,172 @@
+@echo off
+REM Job Assistant - Automated Installation Script for Windows
+
+echo ==================================
+echo   JOB ASSISTANT - INSTALLER
+echo ==================================
+echo.
+
+REM Check if Python is installed
+echo Checking Python installation...
+python --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [ERROR] Python is not installed
+    echo Please install Python 3.8+ from https://www.python.org/
+    pause
+    exit /b 1
+)
+
+for /f "tokens=2" %%i in ('python --version 2^>^&1') do set PYTHON_VERSION=%%i
+echo [OK] Python %PYTHON_VERSION% found
+echo.
+
+REM Check if pip is installed
+echo Checking pip installation...
+pip --version >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [ERROR] pip is not installed
+    echo Installing pip...
+    python -m ensurepip --upgrade
+)
+echo [OK] pip found
+echo.
+
+REM Create virtual environment
+echo Creating virtual environment...
+if exist venv (
+    echo [WARNING] Virtual environment already exists
+    set /p RECREATE="Recreate it? (y/n): "
+    if /i "%RECREATE%"=="y" (
+        rmdir /s /q venv
+        python -m venv venv
+        echo [OK] Virtual environment recreated
+    )
+) else (
+    python -m venv venv
+    echo [OK] Virtual environment created
+)
+echo.
+
+REM Activate virtual environment
+echo Activating virtual environment...
+call venv\Scripts\activate.bat
+echo [OK] Virtual environment activated
+echo.
+
+REM Upgrade pip
+echo Upgrading pip...
+python -m pip install --upgrade pip >nul 2>&1
+echo [OK] pip upgraded
+echo.
+
+REM Install requirements
+echo Installing Python packages...
+echo This may take a few minutes...
+pip install -r requirements.txt
+
+if %errorlevel% neq 0 (
+    echo [ERROR] Package installation failed
+    echo Please check requirements.txt and try again
+    pause
+    exit /b 1
+)
+echo [OK] All packages installed
+echo.
+
+REM Download spaCy model
+echo Downloading spaCy English model...
+python -m spacy download en_core_web_sm
+
+if %errorlevel% neq 0 (
+    echo [ERROR] spaCy model download failed
+    pause
+    exit /b 1
+)
+echo [OK] spaCy model downloaded
+echo.
+
+REM Create necessary directories
+echo Creating project directories...
+if not exist "static\uploads" mkdir static\uploads
+if not exist "data" mkdir data
+if not exist "modules" mkdir modules
+if not exist "models" mkdir models
+type nul > modules\__init__.py
+type nul > models\__init__.py
+echo [OK] Directories created
+echo.
+
+REM Create .env file if it doesn't exist
+if not exist ".env" (
+    echo Creating .env file...
+    (
+        echo # Flask Configuration
+        echo FLASK_APP=app.py
+        echo FLASK_ENV=development
+        echo SECRET_KEY=your-secret-key-change-this
+        echo.
+        echo # Database
+        echo DATABASE_URL=sqlite:///data/job_assistant.db
+        echo.
+        echo # Server Configuration
+        echo HOST=0.0.0.0
+        echo PORT=5000
+        echo.
+        echo # Job Search APIs ^(Add your keys here^)
+        echo ADZUNA_APP_ID=
+        echo ADZUNA_APP_KEY=
+        echo THEMUSE_API_KEY=
+        echo REED_API_KEY=
+        echo RAPIDAPI_KEY=
+        echo REMOTEOK_API_ENABLED=true
+        echo.
+        echo # Job Sites
+        echo BDJOBS_ENABLED=true
+        echo CHAKRI_ENABLED=true
+        echo PROTHOMALO_ENABLED=true
+        echo.
+        echo # Scraping Configuration
+        echo SCRAPING_DELAY=2
+        echo USER_AGENT=Mozilla/5.0 ^(Windows NT 10.0; Win64; x64^) AppleWebKit/537.36
+        echo.
+        echo # Email ^(Optional - leave empty if not using^)
+        echo MAIL_USERNAME=
+        echo MAIL_PASSWORD=
+        echo MAIL_DEFAULT_SENDER=
+    ) > .env
+    echo [OK] .env file created
+    echo [WARNING] Please edit .env to add your API keys
+) else (
+    echo [WARNING] .env file already exists
+)
+echo.
+
+REM Test installation
+echo Testing installation...
+python test_apis.py
+
+echo.
+echo ==================================
+echo   INSTALLATION COMPLETE! 🎉
+echo ==================================
+echo.
+echo Next steps:
+echo 1. Edit .env file and add API keys ^(optional^)
+echo    - See API_SETUP_GUIDE.md for instructions
+echo.
+echo 2. Start the application:
+echo    python app.py
+echo.
+echo 3. Open your browser:
+echo    http://localhost:5000
+echo.
+echo 4. Upload a CV and start searching!
+echo.
+echo Documentation:
+echo   - QUICK_START.md - 5-minute quick start
+echo   - API_SETUP_GUIDE.md - Get free API keys
+echo   - README.md - Full documentation
+echo.
+echo Happy job hunting! 🚀
+echo.
+pause

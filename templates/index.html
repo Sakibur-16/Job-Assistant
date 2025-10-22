@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Assistant - CV-Based Job Search</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Job Search Assistant</h1>
+            <p>Upload your CV to find matching jobs with deadline reminders</p>
+        </header>
+        <!-- Step 1: Upload CV -->
+        <section id="upload-section" class="section active">
+            <h2>Step 1: Upload Your CV</h2>
+            <div class="upload-area">
+                <input type="file" id="cv-file" accept=".pdf,.docx" hidden>
+                <label for="cv-file" class="upload-label">
+                    <div class="upload-icon">📄</div>
+                    <p>Click to upload CV (PDF or DOCX)</p>
+                    <small>Maximum file size: 16MB</small>
+                </label>
+            </div>
+            <div id="upload-status" class="status-message"></div>
+        </section>
+        <!-- Step 2: CV Information -->
+        <section id="cv-info-section" class="section">
+            <h2>Step 2: Your CV Information</h2>
+            <div id="cv-data" class="cv-data"></div>
+            <button id="search-jobs-btn" class="btn btn-primary">Search Matching Jobs</button>
+        </section>
+        <!-- Step 3: Job Results -->
+        <section id="jobs-section" class="section">
+            <h2>Step 3: Matching Jobs</h2>
+            <div class="job-stats" id="job-stats"></div>
+            <div class="filter-tabs">
+                <button class="tab-btn active" data-filter="all">All Jobs</button>
+                <button class="tab-btn" data-filter="excellent">Excellent Match</button>
+                <button class="tab-btn" data-filter="good">Good Match</button>
+                <button class="tab-btn" data-filter="fair">Fair Match</button>
+            </div>
+            <div id="jobs-list" class="jobs-list"></div>
+        </section>
+        <!-- Deadline Notifications -->
+        <div id="notification-panel" class="notification-panel">
+            <h3>⏰ Upcoming Deadlines</h3>
+            <div id="notifications-list"></div>
+        </div>
+    </div>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

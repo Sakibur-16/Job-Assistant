@@ -1,0 +1,33 @@
+# Core Framework
+Flask
+Flask-CORS
+
+# CV Processing
+PyPDF2
+python-docx
+pdfplumber
+
+# Text Processing & NLP
+spacy
+# After installing spacy, run: python -m spacy download en_core_web_sm
+
+# Web Scraping
+beautifulsoup4
+requests
+selenium
+
+# Database
+Flask-SQLAlchemy
+
+# Background Tasks
+APScheduler
+
+# Email Notifications (optional)
+Flask-Mail
+
+# Utilities
+python-dateutil
+python-dotenv
+
+# For colored output in test script
+colorama

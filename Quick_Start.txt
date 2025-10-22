@@ -1,0 +1,32 @@
+🚀 Quick Start:
+# 1. Install dependencies
+pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+
+# 2. Run the app
+python app.py
+
+# 3. Open browser
+http://localhost:5000
+
+# 4. For global access (optional)
+ngrok http 5000
+
+
+
+💡 Key Features:
+
+Smart Matching: Jobs scored 0-100% based on your CV
+Categories: Excellent (80%+), Good (60-79%), Fair (40-59%)
+Deadline Alerts: Notifies 3 days before deadline
+Track Applications: Mark jobs as applied
+Country-Specific: Automatically detects country and searches relevant sites
+
+🔮 Ready for Cloud:
+The code is designed to easily deploy to:
+
+Heroku (add Procfile)
+PythonAnywhere (upload files)
+AWS/Azure (minimal changes needed)
+
+Need help with any specific part or want to add more features?
