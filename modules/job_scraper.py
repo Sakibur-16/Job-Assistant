@@ -162,7 +162,7 @@ class JobScraper:
         return all_jobs
 
     def extract_deadline(self, text: str) -> datetime:
-        """Extract deadline from job text"""
+        """Extract deadline from job """
         deadline_patterns = [
             r'deadline[:\s]+(\d{1,2})[/-](\d{1,2})[/-](\d{4})',
             r'apply by[:\s]+(\d{1,2})[/-](\d{1,2})[/-](\d{4})',
